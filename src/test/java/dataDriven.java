@@ -20,10 +20,10 @@ public class dataDriven {
 
         //now we have to go read particular sheet
         int sheets = workbook.getNumberOfSheets();
-        for(int i=0;i<sheets;i++){
-            if(workbook.getSheetName(i).equalsIgnoreCase("testdata")){
-            XSSFSheet sheet = workbook.getSheetAt(i);
-            //it will scan sheets and get sheet which we are looking for
+        for (int i = 0; i < sheets; i++) {
+            if (workbook.getSheetName(i).equalsIgnoreCase("testdata")) {
+                XSSFSheet sheet = workbook.getSheetAt(i);
+                //it will scan sheets and get sheet which we are looking for
 
                 //identify testcases column by scanning first row, you cannot hardcode index, because excel file may be changed
                 //once column is identified scan entire testcases column to identify Purchase test case
@@ -36,9 +36,9 @@ public class dataDriven {
                 Iterator<Cell> ce = firstrow.cellIterator(); //row is collection of cells
                 int k = 0; //k=0 is the forst column
                 int column = 0;
-                while(ce.hasNext()){ //checking if next cell is present
+                while (ce.hasNext()) { //checking if next cell is present
                     Cell value = ce.next();
-                    if(value.getStringCellValue().equalsIgnoreCase("testcases")){
+                    if (value.getStringCellValue().equalsIgnoreCase("testcases")) {
                         //desired column
                         column = k; //column is actual column number for particular iteration
                     }
@@ -47,8 +47,16 @@ public class dataDriven {
                 System.out.println(column);
 
                 //once column is identified scan entire testcases column to identify Purchase test case
-
+                while (rows.hasNext()) {
+                    Row r = rows.next();
+                    if (r.getCell(column).getStringCellValue().equalsIgnoreCase("Purchase")) {
+                        //if ot matches, grab all cells in this row
+                        Iterator<Cell> cv = r.cellIterator();
+                        while (cv.hasNext()) {
+                            System.out.println(cv.next().getStringCellValue());
+                        }
+                    }
+                }
             }
         }
-    }
-}
+    }}
