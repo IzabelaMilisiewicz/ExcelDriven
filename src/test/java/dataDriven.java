@@ -4,14 +4,15 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 public class dataDriven {
-    public static void main(String[] args) throws IOException {
 
-        //file input stream agument - this is what XSSFWorkbook accepts
+    public ArrayList<String> getData(String testCaseName) throws IOException {    //it's our method to get data
+        ArrayList<String> a = new ArrayList<String>();
+        //file input stream argument - this is what XSSFWorkbook accepts
         //FileInputStream is a java class which has a power to read any file
         //we are creating fis object which can reas our file
         FileInputStream fis = new FileInputStream("C:\\Users\\IzabelaMilisiewicz\\Downloads\\DemoData.xlsx");
@@ -34,7 +35,7 @@ public class dataDriven {
                 //now rows object has ability to scan all rows in our excel
                 Row firstrow = rows.next(); //here we have all cells from first row
                 Iterator<Cell> ce = firstrow.cellIterator(); //row is collection of cells
-                int k = 0; //k=0 is the forst column
+                int k = 0; //k=0 is the first column
                 int column = 0;
                 while (ce.hasNext()) { //checking if next cell is present
                     Cell value = ce.next();
@@ -49,14 +50,22 @@ public class dataDriven {
                 //once column is identified scan entire testcases column to identify Purchase test case
                 while (rows.hasNext()) {
                     Row r = rows.next();
-                    if (r.getCell(column).getStringCellValue().equalsIgnoreCase("Purchase")) {
+                    if (r.getCell(column).getStringCellValue().equalsIgnoreCase(testCaseName)) { //"Purchase" was before but we cannot hard code it
                         //if ot matches, grab all cells in this row
                         Iterator<Cell> cv = r.cellIterator();
                         while (cv.hasNext()) {
-                            System.out.println(cv.next().getStringCellValue());
+                            a.add(cv.next().getStringCellValue());  //storing data in the array list named "a"
+//                            System.out.println(cv.next().getStringCellValue());
                         }
                     }
                 }
             }
         }
-    }}
+        return a;
+    }
+
+
+    public static void main(String[] args) throws IOException {
+
+        }
+}
